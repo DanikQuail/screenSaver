@@ -55,55 +55,45 @@ public class Square {
         this.vertices = vertices;
         cb = BufferUtils.createFloatBuffer(colors.length).put(colors).flip();
 
-        // Generate all the ids
         squareVaoId = GL33.glGenVertexArrays();
         squareVboId = GL33.glGenBuffers();
         squareEboId = GL33.glGenBuffers();
         squareColorId = GL33.glGenBuffers();
 
-        // Get uniform location
         uniformMatrixLocation = GL33.glGetUniformLocation(Shaders.shaderProgramId, "matrix");
 
-        // Tell OpenGL we are currently using this object (vaoId)
         GL33.glBindVertexArray(squareVaoId);
 
-        // Tell OpenGL we are currently writing to this buffer (eboId)
         GL33.glBindBuffer(GL33.GL_ELEMENT_ARRAY_BUFFER, squareEboId);
         IntBuffer ib = BufferUtils.createIntBuffer(indices.length)
                 .put(indices)
                 .flip();
         GL33.glBufferData(GL33.GL_ELEMENT_ARRAY_BUFFER, ib, GL33.GL_STATIC_DRAW);
 
-        // colors
         GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, squareColorId);
         FloatBuffer cb = BufferUtils.createFloatBuffer(colors.length)
                 .put(colors)
                 .flip();
 
-        // Send the buffer (positions) to the GPU
         GL33.glBufferData(GL33.GL_ARRAY_BUFFER, cb, GL33.GL_STATIC_DRAW);
         GL33.glVertexAttribPointer(1, 3, GL33.GL_FLOAT, false, 0, 0);
         GL33.glEnableVertexAttribArray(1);
 
-        // Change to VBOs...
-        // Tell OpenGL we are currently writing to this buffer (vboId)
+
         GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, squareVboId);
         FloatBuffer fb = BufferUtils.createFloatBuffer(vertices.length)
                 .put(vertices)
                 .flip();
 
-        // Send the buffer (positions) to the GPU
         GL33.glBufferData(GL33.GL_ARRAY_BUFFER, fb, GL33.GL_STATIC_DRAW);
         GL33.glVertexAttribPointer(0, 3, GL33.GL_FLOAT, false, 0, 0);
         GL33.glEnableVertexAttribArray(0);
 
         GL33.glUseProgram(educanet.Shaders.shaderProgramId);
 
-        // Sending Mat4 to GPU
         matrix.get(matrixFloatBuffer);
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
 
-        // Clear the buffer from the memory (it's saved now on the GPU, no need for it here)
         MemoryUtil.memFree(fb);
         MemoryUtil.memFree(cb);
         MemoryUtil.memFree(ib);
