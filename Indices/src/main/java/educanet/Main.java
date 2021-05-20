@@ -32,7 +32,7 @@ public class Main {
 
         Shaders.initShaders();
 
-        Square gamer = new Square(-0.20f, 0.5f, 0.25f);
+        Square ctverecek = new Square(-1.00f, 0.5f, 0.3f);
 
         while (!GLFW.glfwWindowShouldClose(window)) {
             if(GLFW.glfwGetKey(window, GLFW.GLFW_KEY_ESCAPE) == GLFW.GLFW_PRESS)
@@ -41,8 +41,8 @@ public class Main {
             GL33.glClearColor(0f, 0f, 0f, 1f);
             GL33.glClear(GL33.GL_COLOR_BUFFER_BIT);
 
-            gamer.update(window);
-            gamer.render();
+            ctverecek.update(window);
+            ctverecek.render();
 
             GLFW.glfwSwapBuffers(window);
 
